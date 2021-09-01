@@ -4,8 +4,9 @@ import canmatrix
 import tkinter as tk
 from tkinter import filedialog
 
-from utils import ControllerApplication, Name
-from A10-Network-Management import RUN_NM_TESTS
+from utils.ControllerApplication import ControllerApplication
+from utils.Name import Name
+from A10NetworkManagement.NetworkManagement import RUN_NM_TESTS
 
 root = tk.Tk()
 root.withdraw()

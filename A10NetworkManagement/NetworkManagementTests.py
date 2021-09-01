@@ -4,7 +4,7 @@ import systest
 from queue import Empty, Queue
 import traceback
 
-from ..utils import ControllerApplication, Name
+from utils import ControllerApplication, Name
 
 class NM_Base_TestCase(systest.TestCase):
     """ Basic test case for network management tests
@@ -87,11 +87,13 @@ class NM_Test_3(NM_Base_TestCase):
     def _run(self) -> None:
         if self.dut_name.arbitrary_address_capable:
             raise systest.TestCaseSkippedError('Configurable Address CA')
+        
         self.ca.send_request(data_page=0, pgn=0x00EE00, destination=0xFF)
-
-        info = self.q.get(timeout=1)
+        info = self.q.get(timeout=1.25)
         src_addr = info['source']
         self.assert_less(src_addr, j1939.ParameterGroupNumber.Address.NULL)
+        self.assert_equal(self.dut_name.value, info['name'].value & 0xFFFFFFFFFFE00000)
+
         pgn = j1939.ParameterGroupNumber(0, 238, j1939.ParameterGroupNumber.Address.GLOBAL)
         mid = j1939.MessageId(priority=6, parameter_group_number=pgn.value, source_address=src_addr)
         name = info['name']
@@ -105,7 +107,8 @@ class NM_Test_3(NM_Base_TestCase):
         self.ca.unsubscribe(self.on_message)
         super().teardown()
 
-    def on_message(self, )
+    def on_message(self, priority, pgn, sa, timestamp, data):
+        pass
 
 
 class NM_Test_4(NM_Base_TestCase):

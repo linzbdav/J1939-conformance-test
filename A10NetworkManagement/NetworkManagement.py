@@ -1,10 +1,11 @@
 import systest
 
-from ..utils import ControllerApplication, Name
+from utils import ControllerApplication, Name
+from . import NetworkManagementTests as NM
 
 def RUN_NM_TESTS(ca:ControllerApplication, dut_name:Name):
     sequencer = systest.setup('A10-NetworkManagement')
-    sequenecr.run(
+    sequencer.run(
         #NM.NM_Test_1(ca, dut_name),
         #NM.NM_Test_2(ca, dut_name),
         NM.NM_Test_3(ca, dut_name),
